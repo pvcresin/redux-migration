@@ -45,7 +45,7 @@ const composeWithDevTools =
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 // component
-function Counter() {
+const Counter = () => {
   const count = useSelector((state: RootState) => state.counter.value);
   const dispatch = useDispatch();
 
@@ -56,12 +56,9 @@ function Counter() {
       <button onClick={() => dispatch(add(5))}>+5</button>
     </div>
   );
-}
-
-export default function App() {
-  return (
-    <Provider store={store}>
-      <Counter />
-    </Provider>
-  );
-}
+};
+export const App = () => (
+  <Provider store={store}>
+    <Counter />
+  </Provider>
+);

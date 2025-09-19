@@ -1,21 +1,25 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import { thunk } from "redux-thunk";
 
-// action
-const add = createAction<number>("ADD");
-
-// reducer
+// slice
 type CounterState = { value: number };
 
 const initialState: CounterState = { value: 0 };
 
-const counterReducer = createReducer(initialState, (builder) => {
-  builder.addCase(add, (state, action) => {
-    state.value += action.payload;
-  });
+const counterSlice = createSlice({
+  name: "counter",
+  initialState,
+  reducers: {
+    add: (state, action: PayloadAction<number>) => {
+      state.value += action.payload;
+    },
+  },
 });
+
+const { add } = counterSlice.actions;
+const counterReducer = counterSlice.reducer;
 
 // store
 type RootState = {

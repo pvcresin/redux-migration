@@ -1,5 +1,6 @@
 import { useDispatch, useSelector, Provider } from "react-redux";
 import { createSlice, configureStore, PayloadAction } from "@reduxjs/toolkit";
+import { thunk } from "redux-thunk";
 
 // slice
 const counterSlice = createSlice({
@@ -12,25 +13,22 @@ const counterSlice = createSlice({
   },
 });
 
-const {
-  actions: { add },
-  reducer: counterReducer,
-} = counterSlice;
+const { add } = counterSlice.actions;
+const counterReducer = counterSlice.reducer;
 
 // store
 const store = configureStore({
   reducer: {
     counter: counterReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
 
 type RootState = ReturnType<typeof store.getState>;
 
-const useAppSelector = useSelector.withTypes<RootState>();
-
 // component
-function Counter() {
-  const count = useAppSelector((state) => state.counter.value);
+const Counter = () => {
+  const count = useSelector((state: RootState) => state.counter.value);
   const dispatch = useDispatch();
 
   return (
@@ -40,12 +38,12 @@ function Counter() {
       <button onClick={() => dispatch(add(5))}>+5</button>
     </div>
   );
-}
+};
 
-export default function App() {
+export const App = () => {
   return (
     <Provider store={store}>
       <Counter />
     </Provider>
   );
-}
+};
