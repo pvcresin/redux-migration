@@ -21,7 +21,6 @@ const store = configureStore({
   reducer: {
     counter: counterReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });
 
 type RootState = ReturnType<typeof store.getState>;

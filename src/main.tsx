@@ -6,6 +6,10 @@ import { App as App3 } from "./App3";
 import { App as App4 } from "./App4";
 import { App as AppNew } from "./AppNew";
 
+import { App as Fetch1 } from "./Fetch1_Redux_Thunk";
+import { App as Fetch2 } from "./Fetch2_createAsyncThunk";
+import { App as Fetch3 } from "./Fetch3_RTK_Query";
+
 const root = document.getElementById("root");
 
 if (root) {
@@ -26,6 +30,12 @@ if (root) {
       </div>
       <div>
         <h1>fetch Data with Redux</h1>
+        Fetch1
+        <Fetch1 />
+        Fetch2
+        <Fetch2 />
+        Fetch3
+        <Fetch3 />
       </div>
     </>
   );
