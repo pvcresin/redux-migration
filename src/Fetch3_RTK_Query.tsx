@@ -10,14 +10,19 @@ const baseUrl = "https://swapi.dev/api/";
 const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (build) => ({
-    getPerson: build.query<Person, number>({ query: (id) => `people/${id}/` }),
+    getPerson: build.query<Person, number>({
+      query: (id) => `people/${id}/`,
+    }),
   }),
 });
+
+const apiReducer = api.reducer;
+const { useGetPersonQuery } = api;
 
 // store
 const store = configureStore({
   reducer: {
-    api: api.reducer,
+    api: apiReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),
@@ -25,7 +30,7 @@ const store = configureStore({
 
 // component
 const PersonName = () => {
-  const { data, isLoading, error } = api.useGetPersonQuery(1);
+  const { data, isLoading, error } = useGetPersonQuery(1);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error</p>;

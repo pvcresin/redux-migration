@@ -1,16 +1,10 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Provider, useDispatch, useSelector } from "react-redux";
-import { createStore, applyMiddleware, combineReducers, compose } from "redux";
-import { thunk } from "redux-thunk";
+import { useDispatch, useSelector, Provider } from "react-redux";
+import { createSlice, configureStore, PayloadAction } from "@reduxjs/toolkit";
 
 // slice
-type CounterState = { value: number };
-
-const initialState: CounterState = { value: 0 };
-
 const counterSlice = createSlice({
   name: "counter",
-  initialState,
+  initialState: { value: 0 },
   reducers: {
     add: (state, action: PayloadAction<number>) => {
       state.value += action.payload;
@@ -22,15 +16,13 @@ const { add } = counterSlice.actions;
 const counterReducer = counterSlice.reducer;
 
 // store
-type RootState = {
-  counter: CounterState;
-};
-
-const reducer = combineReducers({
-  counter: counterReducer,
+const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+  },
 });
 
-const store = createStore(reducer);
+type RootState = ReturnType<typeof store.getState>;
 
 // component
 const Counter = () => {
@@ -46,8 +38,10 @@ const Counter = () => {
   );
 };
 
-export const App = () => (
-  <Provider store={store}>
-    <Counter />
-  </Provider>
-);
+export const App = () => {
+  return (
+    <Provider store={store}>
+      <Counter />
+    </Provider>
+  );
+};

@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import { createStore, applyMiddleware, combineReducers, compose } from "redux";
-import { thunk } from "redux-thunk";
+import { createStore, combineReducers } from "redux";
 
 // slice
 type CounterState = { value: number };
@@ -22,23 +21,13 @@ const { add } = counterSlice.actions;
 const counterReducer = counterSlice.reducer;
 
 // store
-type RootState = {
-  counter: CounterState;
-};
-
 const reducer = combineReducers({
   counter: counterReducer,
 });
 
-interface ExtendedWindow extends Window {
-  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-}
-declare var window: ExtendedWindow;
+const store = createStore(reducer);
 
-const composeWithDevTools =
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+type RootState = ReturnType<typeof store.getState>;
 
 // component
 const Counter = () => {

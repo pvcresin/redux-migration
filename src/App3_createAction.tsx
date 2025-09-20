@@ -1,27 +1,37 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
+import { createAction } from "@reduxjs/toolkit";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import { createStore, applyMiddleware, combineReducers, compose } from "redux";
+import {
+  createStore,
+  applyMiddleware,
+  combineReducers,
+  compose,
+  UnknownAction,
+} from "redux";
 import { thunk } from "redux-thunk";
 
 // action
-const add = createAction<number>("ADD");
+const ADD = "ADD";
+
+const add = createAction<number>(ADD);
 
 // reducer
 type CounterState = { value: number };
 
 const initialState: CounterState = { value: 0 };
 
-const counterReducer = createReducer(initialState, (builder) => {
-  builder.addCase(add, (state, action) => {
-    state.value += action.payload;
-  });
-});
-
-// store
-type RootState = {
-  counter: CounterState;
+const counterReducer = (state = initialState, action: UnknownAction) => {
+  switch (action.type) {
+    case ADD:
+      return {
+        ...state,
+        value: state.value + (action.payload as number),
+      };
+    default:
+      return state;
+  }
 };
 
+// store
 const reducer = combineReducers({
   counter: counterReducer,
 });
@@ -35,6 +45,8 @@ const composeWithDevTools =
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+
+type RootState = ReturnType<typeof store.getState>;
 
 // component
 const Counter = () => {

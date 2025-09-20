@@ -9,27 +9,28 @@ import {
 import { thunk } from "redux-thunk";
 
 // action
-const add = (value: number) => ({ type: "ADD", payload: value });
+const ADD = "ADD";
+
+const add = (value: number) => ({ type: ADD, payload: value });
 
 // reducer
 type CounterState = { value: number };
 
 const initialState: CounterState = { value: 0 };
 
-function counterReducer(state = initialState, action: UnknownAction) {
+const counterReducer = (state = initialState, action: UnknownAction) => {
   switch (action.type) {
-    case "ADD":
-      return { ...state, value: state.value + (action.payload as number) };
+    case ADD:
+      return {
+        ...state,
+        value: state.value + (action.payload as number),
+      };
     default:
       return state;
   }
-}
-
-// store
-type RootState = {
-  counter: CounterState;
 };
 
+// store
 const reducer = combineReducers({
   counter: counterReducer,
 });
@@ -44,6 +45,8 @@ const composeWithDevTools =
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
+type RootState = ReturnType<typeof store.getState>;
+
 // component
 const Counter = () => {
   const count = useSelector((state: RootState) => state.counter.value);
@@ -57,6 +60,7 @@ const Counter = () => {
     </div>
   );
 };
+
 export const App = () => (
   <Provider store={store}>
     <Counter />
