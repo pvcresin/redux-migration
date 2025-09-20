@@ -11,6 +11,9 @@ import { App as Fetch1_Redux_Thunk } from "./Fetch1_Redux_Thunk";
 import { App as Fetch2_createAsyncThunk } from "./Fetch2_createAsyncThunk";
 import { App as Fetch3_RTK_Query } from "./Fetch3_RTK_Query";
 
+import { App as App_Compare } from "./App_Compare";
+import { App as Fetch_Compare } from "./Fetch_Compare";
+
 const root = document.getElementById("root");
 
 if (root) {
@@ -39,6 +42,11 @@ if (root) {
         <Fetch2_createAsyncThunk />
         Fetch3: RTK_Query
         <Fetch3_RTK_Query />
+      </div>
+      <div>
+        <h1>Compare</h1>
+        <App_Compare />
+        <Fetch_Compare />
       </div>
     </>
   );
