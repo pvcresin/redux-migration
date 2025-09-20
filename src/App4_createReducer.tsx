@@ -1,4 +1,4 @@
-import { createAction, createReducer, PayloadAction } from "@reduxjs/toolkit";
+import { createAction, createReducer } from "@reduxjs/toolkit";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import { thunk } from "redux-thunk";
@@ -12,7 +12,7 @@ type CounterState = { value: number };
 const initialState: CounterState = { value: 0 };
 
 const counterReducer = createReducer(initialState, (builder) => {
-  builder.addCase(add, (state, action: PayloadAction<number>) => {
+  builder.addCase(add, (state, action) => {
     state.value += action.payload;
   });
 });
